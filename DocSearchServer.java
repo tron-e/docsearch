@@ -32,10 +32,37 @@ class FileHelpers {
 
 class Handler implements URLHandler {
     List<File> files;
+    /**
+     * @param directory
+     * @throws IOException
+     */
     Handler(String directory) throws IOException {
       this.files = FileHelpers.getFiles(Paths.get(directory));
     }
+
+
+
     public String handleRequest(URI url) throws IOException {
+        if (url.path().equals("/")) {
+            return String.format("There are %d files to search", getFiles().size());
+        } else if (url.getPath().equals("/search")) {
+            String [] parameters = url.getQuery().split("=");
+            if (parameters[0].equals("q")){
+
+                
+
+
+                return String.format("There were %d files found:", getFiles().contains());
+            }
+           
+        } 
+        else {
+            System.out.println("Path: " + url.getPath());
+            if (url.getPath().contains("/add")) {
+                String[] parameters = url.getQuery().split("=");
+                if (parameters[0].equals("count")) {
+                    num += Integer.parseInt(parameters[1]);
+                    return String.format("Number increased by %s! It's now %d", parameters[1], num);
       return "Don't know how to handle that path!";
     }
 }
@@ -52,4 +79,5 @@ class DocSearchServer {
         Server.start(port, new Handler("./technical/"));
     }
 }
+
 
